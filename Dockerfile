@@ -9,7 +9,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     git less vim build-essential tmux zip unzip curl wget ca-certificates gnupg apt-transport-https \
     python3 python3-dev python3-ipykernel \
     python3-numpy python3-matplotlib python3-pandas python3-scipy python3-sympy \
-    python3-postgresql python3-redis
+    python3-networkx python3-postgresql python3-redis
 
 RUN wget -O - https://apt.corretto.aws/corretto.key | gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | tee /etc/apt/sources.list.d/corretto.list
