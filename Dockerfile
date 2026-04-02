@@ -11,13 +11,14 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     python3-numpy python3-matplotlib python3-pandas python3-scipy python3-sympy \
     python3-postgresql python3-redis
 
+RUN wget -O - https://apt.corretto.aws/corretto.key | gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | tee /etc/apt/sources.list.d/corretto.list
+
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y java-25-amazon-corretto-jdk
 
-RUN mkdir -p /usr/lib/jvm/java-25-amazon-corretto && \
-    wget -qO- https://corretto.aws/downloads/latest/amazon-corretto-25-aarch64-linux-jdk.tar.gz | \
-    tar xz --strip-components=1 -C /usr/lib/jvm/java-25-amazon-corretto
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY config/settings.json /home/coder/.local/share/code-server/User/settings.json
 
