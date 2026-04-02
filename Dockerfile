@@ -6,10 +6,12 @@ WORKDIR /home/coder
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     bash bash-completion zsh fish \
-    git less vim build-essential tmux zip unzip \
+    git less vim build-essential tmux zip unzip curl wget ca-certificates gnupg apt-transport-https \
     python3 python3-dev python3-ipykernel \
     python3-numpy python3-matplotlib python3-pandas python3-scipy python3-sympy \
     python3-postgresql python3-redis
+
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
