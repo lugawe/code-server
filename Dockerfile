@@ -1,4 +1,4 @@
-FROM codercom/code-server:4.112.0
+FROM codercom/code-server:4.112.0-noble
 
 USER root
 
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     git less vim build-essential tmux zip unzip \
     python3 python3-dev python3-ipykernel \
     python3-numpy python3-matplotlib python3-pandas python3-scipy python3-sympy \
-    python3-postgresql
+    python3-postgresql python3-redis
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
