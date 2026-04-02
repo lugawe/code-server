@@ -1,4 +1,5 @@
 {
+    "workbench.colorTheme": "Default Dark Modern",
     "security.workspace.trust.enabled": false,
-    "workbench.colorTheme": "Default Dark Modern"
+    "terminal.integrated.initialHint": false
 }
