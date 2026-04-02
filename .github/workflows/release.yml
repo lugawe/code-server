@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 1.2.3)"
+        required: true
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PLATFORMS: linux/amd64,linux/arm64
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Resolve Version
+        id: v
+        run: echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+
+      - name: Set Tag and Push
+        run: |
+          git tag v${{ steps.v.outputs.version }}
+          git push origin v${{ steps.v.outputs.version }}
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v4
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Build and Push Image
+        uses: docker/build-push-action@v7
+        with:
+          platforms: ${{ env.PLATFORMS }}
+          context: .
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v${{ steps.v.outputs.version }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.v.outputs.version }}
+          name: v${{ steps.v.outputs.version }}
+          generate_release_notes: true
