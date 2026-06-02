@@ -29,7 +29,7 @@ USER coder
 
 RUN echo "# utility" >> ~/.bashrc
 RUN echo '[ -f "$HOME/.coderc" ] && source "$HOME/.coderc"' >> ~/.bashrc
-RUN echo 'export PATH=$PATH:$HOME/.local/bin'
+RUN echo 'export PATH=$PATH:$HOME/.local/bin' >> ~/.bashrc
 
 RUN echo "# java" >> ~/.bashrc
 RUN echo 'export JAVA_HOME=/usr/lib/jvm/java-25-amazon-corretto' >> ~/.bashrc
